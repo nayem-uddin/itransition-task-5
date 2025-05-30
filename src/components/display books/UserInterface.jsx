@@ -1,0 +1,39 @@
+import { useContext, useEffect, useState } from "react";
+import Topbar from "../input bar/Topbar";
+import BooksTable from "./BooksTable";
+import { UserQuery } from "../../context/contextVar";
+import handleQuery from "../../randomizer/books";
+
+export default function UserInterface() {
+  const { query } = useContext(UserQuery);
+  const { page } = query;
+  const [bookList, setBookList] = useState([]);
+  const [pageno, setPage] = useState(page);
+  function handleScroll() {
+    setPage(
+      (prev) =>
+        prev + Math.floor((scrollY + innerHeight) / document.body.offsetHeight)
+    );
+  }
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    function updateBooks() {
+      const newBooks = handleQuery({ ...query, pageno }, pageno * 10 + 30);
+      setBookList(newBooks);
+    }
+    updateBooks();
+  }, [pageno, query]);
+
+  return (
+    <div>
+      <Topbar />
+      <div>
+        <BooksTable books={bookList} />
+      </div>
+    </div>
+  );
+}

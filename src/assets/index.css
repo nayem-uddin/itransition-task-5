@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+label {
+  margin-right: 5px;
+}
+table {
+  display: flex;
+}
+
+thead {
+  position: fixed;
+  margin-top: 8rem;
+  background-color: white;
+}
+
+tbody {
+  margin-top: 10rem;
+  flex: 1 1 auto;
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+  td {
+    width: 25%;
+    &:nth-child(1) {
+      width: 20%;
+    }
+  }
+}
+
+tr {
+  width: 90%;
+  display: table;
+  table-layout: fixed;
+  margin: auto;
+}
+p {
+  line-height: 0.5rem;
+}
