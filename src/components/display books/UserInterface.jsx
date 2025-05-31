@@ -6,9 +6,8 @@ import handleQuery from "../../randomizer/books";
 
 export default function UserInterface() {
   const { query } = useContext(UserQuery);
-  const { page } = query;
   const [bookList, setBookList] = useState([]);
-  const [pageno, setPage] = useState(page);
+  const [pageno, setPage] = useState(0);
   function handleScroll() {
     setPage(
       (prev) =>
@@ -22,7 +21,7 @@ export default function UserInterface() {
 
   useEffect(() => {
     function updateBooks() {
-      const newBooks = handleQuery({ ...query, pageno }, pageno * 10 + 30);
+      const newBooks = handleQuery(query, pageno * 10 + 30);
       setBookList(newBooks);
     }
     updateBooks();

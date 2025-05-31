@@ -27,6 +27,9 @@ tbody {
     &:nth-child(1) {
       width: 20%;
     }
+    &:nth-child(3) {
+      margin-left: 2%;
+    }
   }
 }
 
@@ -38,4 +41,10 @@ tr {
 }
 p {
   line-height: 0.5rem;
+}
+li {
+  line-height: 1rem;
+}
+ul {
+  list-style-type: none;
 }

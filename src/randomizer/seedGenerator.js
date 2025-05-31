@@ -1,3 +1,5 @@
+import { faker } from "@faker-js/faker";
+
 export const seedGen = () => {
-  return Math.floor(Math.random() * 1000);
+  return faker.number.int();
 };

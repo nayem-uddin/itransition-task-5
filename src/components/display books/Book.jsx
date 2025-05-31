@@ -1,5 +1,7 @@
+import ReviewsDisplay from "./ReviewsDisplay";
+
 export default function Book({ book, index }) {
-  const { title, author, publisher, isbn, cover } = book;
+  const { title, author, publisher, isbn, cover, likes, reviews } = book;
   return (
     <>
       <tr className="accordion-item">
@@ -21,15 +23,37 @@ export default function Book({ book, index }) {
           data-bs-parent="#accordionFlushExample"
         >
           <div className="accordion-body d-flex">
-            <img src={cover} alt={title} />
+            <img src={cover} alt={title} width="200px" height="300px" />
             <aside className="mt-2 ms-4">
               <header>
                 <p className="h4">{title}</p>
                 <p className="h6">{author}</p>
               </header>
               <main className="mt-3">
-                <p>Publisher: {publisher}</p>
-                <p>ISBN: {isbn}</p>
+                <p>
+                  {" "}
+                  <b>Publisher: </b>
+                  {publisher}
+                </p>
+                <p>
+                  <b>ISBN:</b> {isbn}
+                </p>
+                <p>
+                  <b>Likes:</b> {likes}
+                </p>
+                <p>
+                  <b>Reviews:</b>
+                  <p className="mt-4">
+                    {reviews.length == 0 && <p>No reviews yet</p>}
+                    {reviews.length > 0 && (
+                      <ul>
+                        {reviews.map((review) => (
+                          <ReviewsDisplay reviewObject={review} />
+                        ))}
+                      </ul>
+                    )}
+                  </p>
+                </p>
               </main>
             </aside>
           </div>
