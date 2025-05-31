@@ -29,7 +29,7 @@ export default function UserInterface() {
 
   return (
     <div>
-      <Topbar />
+      <Topbar books={bookList} />
       <div>
         <BooksTable books={bookList} />
       </div>
