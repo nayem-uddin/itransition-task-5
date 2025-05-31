@@ -41,53 +41,65 @@ function perTen(faker, totalLikes, totalReviews, reviewsList) {
   const expectedHighestReviewsCount = (numerizedReviews - lowestReviews) * 10;
   let highestLikesCount = 0;
   let highestReviewsCount = 0;
-  let attempts = 0;
-  const MAX_ATTEMPTS = 100;
-  const candidates = [];
-
-  while (arrayOfTen.length < 10 && attempts < MAX_ATTEMPTS) {
-    attempts++;
-    const book = createBook(faker, reviewsList, totalLikes, totalReviews);
-    const { likes, reviews } = book;
-    const NoOfReviews = reviews.length;
-    const inLikeRange = likes >= lowestLikes && likes <= highestLikes;
-    const inReviewRange =
-      NoOfReviews >= lowestReviews && NoOfReviews <= highestReviews;
-    if (inLikeRange && inReviewRange) {
-      let added = false;
-      if (
-        likes === highestLikes &&
-        highestLikesCount < expectedHighestLikesCount
-      ) {
-        highestLikesCount++;
-        arrayOfTen.push(book);
-        added = true;
-      }
-      if (
-        !added &&
-        NoOfReviews === highestReviews &&
-        highestReviewsCount < expectedHighestReviewsCount
-      ) {
-        highestReviewsCount++;
-        arrayOfTen.push(book);
-        added = true;
-      }
-      if (!added && arrayOfTen.length < 10) {
-        arrayOfTen.push(book);
-      }
-    } else {
-      candidates.push(book);
-    }
-  }
-  while (arrayOfTen.length < 10 && candidates.length > 0) {
-    arrayOfTen.push(candidates.pop());
+  // let attempts = 0;
+  // const MAX_ATTEMPTS = 100;
+  // const candidates = [];
+  while (arrayOfTen.length < 10) {
+    const isExpectedLikesReached =
+      highestLikesCount === expectedHighestLikesCount;
+    const likes = isExpectedLikesReached ? lowestLikes : highestLikes;
+    highestLikesCount += Number(!isExpectedLikesReached);
+    const isExpectedReviewsReached =
+      highestReviewsCount === expectedHighestReviewsCount;
+    const reviews = isExpectedReviewsReached ? lowestReviews : highestReviews;
+    highestReviewsCount += Number(!isExpectedReviewsReached);
+    const book = createBook(faker, reviewsList, likes, reviews);
+    arrayOfTen.push(book);
   }
 
-  if (arrayOfTen.length < 10) {
-    console.warn(
-      `Only generated ${arrayOfTen.length} books after ${MAX_ATTEMPTS} attempts.`
-    );
-  }
+  // while (arrayOfTen.length < 10 && attempts < MAX_ATTEMPTS) {
+  //   attempts++;
+  //   const book = createBook(faker, reviewsList, totalLikes, totalReviews);
+  //   const { likes, reviews } = book;
+  //   const NoOfReviews = reviews.length;
+  //   const inLikeRange = likes >= lowestLikes && likes <= highestLikes;
+  //   const inReviewRange =
+  //     NoOfReviews >= lowestReviews && NoOfReviews <= highestReviews;
+  //   if (inLikeRange && inReviewRange) {
+  //     let added = false;
+  //     if (
+  //       likes === highestLikes &&
+  //       highestLikesCount < expectedHighestLikesCount
+  //     ) {
+  //       highestLikesCount++;
+  //       arrayOfTen.push(book);
+  //       added = true;
+  //     }
+  //     if (
+  //       !added &&
+  //       NoOfReviews === highestReviews &&
+  //       highestReviewsCount < expectedHighestReviewsCount
+  //     ) {
+  //       highestReviewsCount++;
+  //       arrayOfTen.push(book);
+  //       added = true;
+  //     }
+  //     if (!added && arrayOfTen.length < 10) {
+  //       arrayOfTen.push(book);
+  //     }
+  //   } else {
+  //     candidates.push(book);
+  //   }
+  // }
+  // while (arrayOfTen.length < 10 && candidates.length > 0) {
+  //   arrayOfTen.push(candidates.pop());
+  // }
+
+  // if (arrayOfTen.length < 10) {
+  //   console.warn(
+  //     `Only generated ${arrayOfTen.length} books after ${MAX_ATTEMPTS} attempts.`
+  //   );
+  // }
   return arrayOfTen;
 }
 
