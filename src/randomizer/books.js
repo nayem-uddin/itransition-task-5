@@ -42,12 +42,12 @@ function perTen(faker, totalLikes, totalReviews, reviewsList) {
   let highestLikesCount = 0;
   let highestReviewsCount = 0;
   let attempts = 0;
-  const MAX_ATTEMPTS = 100; // <-- safety net
+  const MAX_ATTEMPTS = 100;
   const candidates = [];
 
   while (arrayOfTen.length < 10 && attempts < MAX_ATTEMPTS) {
     attempts++;
-    const book = createBook(faker, reviewsList);
+    const book = createBook(faker, reviewsList, totalLikes, totalReviews);
     const { likes, reviews } = book;
     const NoOfReviews = reviews.length;
     const inLikeRange = likes >= lowestLikes && likes <= highestLikes;
@@ -76,11 +76,9 @@ function perTen(faker, totalLikes, totalReviews, reviewsList) {
         arrayOfTen.push(book);
       }
     } else {
-      candidates.push(book); // fallback in case we can’t meet all conditions
+      candidates.push(book);
     }
   }
-
-  // Fill in missing books if strict conditions weren't enough
   while (arrayOfTen.length < 10 && candidates.length > 0) {
     arrayOfTen.push(candidates.pop());
   }
@@ -122,18 +120,26 @@ function imgLinkgen(title, author, textColor, coverColor) {
   return imgLink;
 }
 
-function reviewsgen(faker, reviews) {
-  return faker.helpers.arrayElements(reviews, { max: 20 });
+function reviewsgen(faker, reviewsList, reviews) {
+  const minReviews = Math.floor(reviews);
+  const maxReviews = Math.ceil(reviews);
+  return faker.helpers.arrayElements(reviewsList, {
+    max: maxReviews,
+    min: minReviews,
+  });
 }
 
-function createBook(customFaker, reviewsList) {
+function createBook(customFaker, reviewsList, noofLikes, noofReviews) {
   const title = customFaker.book.title();
   const author = customFaker.book.author();
   const textColor = customFaker.color.rgb();
   const coverColor = customFaker.color.rgb({ includeAlpha: true });
   const imgLink = imgLinkgen(title, author, textColor, coverColor);
-  const reviews = reviewsgen(customFaker, reviewsList);
-  const likes = customFaker.number.int({ max: 10 });
+  const reviews = reviewsgen(customFaker, reviewsList, noofReviews);
+  const likes = customFaker.number.int({
+    max: Math.ceil(noofLikes),
+    min: Math.floor(noofLikes),
+  });
   return {
     title: title,
     author: author,
