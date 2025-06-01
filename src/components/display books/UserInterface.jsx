@@ -21,7 +21,7 @@ export default function UserInterface() {
 
   useEffect(() => {
     function updateBooks() {
-      const newBooks = handleQuery(query, pageno * 10 + 30);
+      const newBooks = handleQuery(query, pageno * 10 + 20);
       setBookList(newBooks);
     }
     updateBooks();
